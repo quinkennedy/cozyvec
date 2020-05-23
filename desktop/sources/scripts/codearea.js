@@ -78,6 +78,7 @@ function CodeArea(client) {
 // cmdorctrl+R to run
 // cmdorctrl+E to export SVG
 // cmdorctrl+I to export image
+// cmdorctrl+J to export Gcode
 
 paper("letter", true)
 pen(.6)

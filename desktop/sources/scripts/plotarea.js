@@ -160,6 +160,12 @@ function PlotArea(client) {
     return this.polylineGroupsToSVG(this.groups, {paperDimensions: [this.paperWidth, this.paperHeight]})
   }
 
+  this.getGcode = function(){
+    this.flushPolyline(0, 0)
+    this.flushPolylines()
+    return this.polylineGroupsToGcode(this.groups)
+  }
+
   this.polylineGroupsToSVG = function(groups, opt = {}) {
     const paperDimensions = opt.paperDimensions
     if (!paperDimensions) throw new TypeError('must specify dimensions currently')
@@ -186,5 +192,29 @@ ${group.polylines.map(polyline => {
   </g>`
   }).join('\n')}
 </svg>`
+  }
+
+  this.polylineGroupsToGcode = function(groups) {
+    const decimalPlaces = 5
+
+    return `M3 S4000\n
+${groups.map(group => {
+    return `
+${group.polylines.map(polyline => {
+      return `${polyline.map((point, j) => {
+        const first = (j === 0)
+        //eventually I might not want to draw with G0 commands
+        const type = first ? 'G0' : 'G0'
+        const x = (point[0]).toFixed(decimalPlaces)
+        const y = (point[1]).toFixed(decimalPlaces)
+        //if this was the beginning of the polyline, pen down afterward
+        const end = first ? '\nM3 S8000' : ''
+        return `${type} X${x} Y${y}${end}`
+      }).join('\n')}
+      \nM3 4000`//connect all the individual lines (and pen up after polyline)
+    }).join('\n')}
+  `//connect all the polylines
+  }).join('\n')}
+\nM5`//connect all the groups (and 'turn off' the 'spindle')
   }
 }

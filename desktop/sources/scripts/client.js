@@ -27,6 +27,7 @@ function Client() {
     this.acels.set('File', 'Export SVG', 'CmdOrCtrl+E', () => { this.source.write('cozyvec', 'svg', this.plotarea.getSvg(), 'image/svg+xml') })
     this.acels.set('File', 'Export PNG', 'CmdOrCtrl+I', () => { this.source.write('cozyvec', 'png', this.plotarea.el.toDataURL('image/png', 1.0), 'image/png') })
     this.acels.set('File', 'Open', 'CmdOrCtrl+O', () => { this.source.open('js', this.whenOpen) })
+    this.acels.set('File', 'Export Gcode', 'CmdOrCtrl+J', () => { this.source.write('cozyvec', 'gcode', this.plotarea.getGcode(), 'text/plain') })
 
     this.acels.add('Edit', 'undo')
     this.acels.add('Edit', 'redo')
