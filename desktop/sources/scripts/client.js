@@ -28,6 +28,19 @@ function Client() {
     this.acels.set('File', 'Export PNG', 'CmdOrCtrl+I', () => { this.source.write('cozyvec', 'png', this.plotarea.el.toDataURL('image/png', 1.0), 'image/png') })
     this.acels.set('File', 'Open', 'CmdOrCtrl+O', () => { this.source.open('js', this.whenOpen) })
     this.acels.set('File', 'Export Gcode', 'CmdOrCtrl+J', () => { this.source.write('cozyvec', 'gcode', this.plotarea.getGcode(), 'text/plain') })
+    this.acels.set('File', 'Export Zip', 'CmdOrCtrl+K', () => {
+      const t = this.source.timestamp()
+        const zip = new JSZip()
+        zip.file(t+'.svg', this.plotarea.getSvg())
+        //zip.file(t+' render.png', this.plotarea.el.toDataURL('image/png', 1.0))
+        this.plotarea.el.toBlob(b => {
+          zip.file(t+'.png', b)
+          zip.file(t+'.gcode', this.plotarea.getGcode())
+          zip.file(t+'.txt', this.codearea._input.value)
+          zip.generateAsync({type:'blob'})
+            .then( z => {this.source.write('cozyvec', 'zip',z,'blob')})
+        }, 'image/png', 1.0)
+    })
 
     this.acels.add('Edit', 'undo')
     this.acels.add('Edit', 'redo')

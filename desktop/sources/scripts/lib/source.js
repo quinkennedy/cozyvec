@@ -68,17 +68,26 @@ function Source (client) {
 
   this.write = (name, ext, content, type, settings = 'charset=utf-8') => {
     const link = document.createElement('a')
-    link.setAttribute('download', `${name}-${timestamp()}.${ext}`)
+    const filename = `${(name ? (name+'-') : '')}${this.timestamp()}.${ext}`
+    link.setAttribute('download', filename)
     if (type === 'image/png' || type === 'image/jpeg') {
       link.setAttribute('href', content)
     } else {
-      link.setAttribute('href', URL.createObjectURL(dataURItoBlob(content, type)))
+      const blob = (type === 'blob' ? content : dataURItoBlob(content, type))
+      link.setAttribute('href', URL.createObjectURL(blob))
     }
     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }))
   }
 
-  function timestamp() {
-    return Math.round((new Date()).getTime() / 1000).toString(16).toUpperCase()
+  this.timestamp = () => {
+    const d = new Date()
+    const Y = d.getFullYear()
+    const M = ('0'+d.getMonth()+1).slice(-2)
+    const D = ('0'+d.getDate()).slice(-2)
+    const H = ('0'+d.getHours()).slice(-2)
+    const m = ('0'+d.getMinutes()).slice(-2)
+    const s = ('0'+d.getSeconds()).slice(-2)
+    return `${Y}-${M}-${D} at ${H}.${m}.${s}`
   }
 
   function dataURItoBlob(data,mimeString) {

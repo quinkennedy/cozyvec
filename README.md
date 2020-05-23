@@ -78,6 +78,7 @@ npm start
 - `CmdOrCtrl+E` export SVG
 - `CmdOrCtrl+I` export PNG
 - `CmdOrCtrl+J` export Gcode
+- `CmdOrCtrl+K` export Zip (w/ SVG, PNG, Gcode, and code)
 - `CmdOrCtrl+P` flip paper orientation
 - `CmdOrCtrl+N` new file
 - `CmdOrCtrl+O` open .js file
