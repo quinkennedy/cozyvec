@@ -197,7 +197,7 @@ ${group.polylines.map(polyline => {
   this.polylineGroupsToGcode = function(groups) {
     const decimalPlaces = 5
 
-    return `M3 S4000\n
+    return `G21\nM3 S4000\n
 ${groups.map(group => {
     return `
 ${group.polylines.map(polyline => {
@@ -209,7 +209,9 @@ ${group.polylines.map(polyline => {
         const y = (point[1]).toFixed(decimalPlaces)
         //if this was the beginning of the polyline, pen down afterward
         const end = first ? '\nM3 S8000' : ''
-        return `${type} X${x} Y${y}${end}`
+        //add .001s pause between moves
+        //helps ensure G0 moves fully complete before starting the next move
+        return `${type} X${x} Y${y}\nM4 P0.001${end}`
       }).join('\n')}
       \nM3 S4000`//connect all the individual lines (and pen up after polyline)
     }).join('\n')}
