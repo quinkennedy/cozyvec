@@ -211,7 +211,7 @@ ${group.polylines.map(polyline => {
         const end = first ? '\nM3 S8000' : ''
         return `${type} X${x} Y${y}${end}`
       }).join('\n')}
-      \nM3 4000`//connect all the individual lines (and pen up after polyline)
+      \nM3 S4000`//connect all the individual lines (and pen up after polyline)
     }).join('\n')}
   `//connect all the polylines
   }).join('\n')}
