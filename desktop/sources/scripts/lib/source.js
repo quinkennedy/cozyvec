@@ -82,7 +82,7 @@ function Source (client) {
   this.timestamp = () => {
     const d = new Date()
     const Y = d.getFullYear()
-    const M = ('0'+d.getMonth()+1).slice(-2)
+    const M = ('0'+(d.getMonth()+1)).slice(-2)
     const D = ('0'+d.getDate()).slice(-2)
     const H = ('0'+d.getHours()).slice(-2)
     const m = ('0'+d.getMinutes()).slice(-2)
