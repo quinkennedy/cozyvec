@@ -211,7 +211,7 @@ ${group.polylines.map(polyline => {
         const end = first ? '\nM3 S8000' : ''
         //add .001s pause between moves
         //helps ensure G0 moves fully complete before starting the next move
-        return `${type} X${x} Y${y}\nM4 P0.001${end}`
+        return `${type} X${x} Y${y}\nG4 P0.001${end}`
       }).join('\n')}
       \nM3 S4000`//connect all the individual lines (and pen up after polyline)
     }).join('\n')}
