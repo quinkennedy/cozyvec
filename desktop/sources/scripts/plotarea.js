@@ -203,17 +203,17 @@ ${groups.map(group => {
 ${group.polylines.map(polyline => {
       return `${polyline.map((point, j) => {
         const first = (j === 0)
-        //eventually I might not want to draw with G0 commands
-        const type = first ? 'G0' : 'G0'
+        //move with G0, draw with G1
+        const type = first ? 'G0' : 'G1'
         const x = (point[0]).toFixed(decimalPlaces)
         const y = (point[1]).toFixed(decimalPlaces)
-        //if this was the beginning of the polyline, pen down afterward
-        const end = first ? '\nM3 S8000' : ''
-        //add .001s pause between moves
-        //helps ensure G0 moves fully complete before starting the next move
-        return `${type} X${x} Y${y}\nG4 P0.001${end}`
+        //if this is the beginning of the polyline, pen down afterward
+        // and wait briefly for the pen to _get_ down
+        //if this is a draw command, set feedrate to 2m/minute
+        const end = first ? '\nM3 S8000\nM4 P0.1' : ' F2000'
+        return `${type} X${x} Y${y}\n${end}`
       }).join('\n')}
-      \nM3 S4000`//connect all the individual lines (and pen up after polyline)
+      \nM3 S4000\nM4 P0.2`//connect all the individual lines (and pen up after polyline)
     }).join('\n')}
   `//connect all the polylines
   }).join('\n')}
