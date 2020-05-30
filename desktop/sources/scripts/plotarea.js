@@ -210,10 +210,10 @@ ${group.polylines.map(polyline => {
         //if this is the beginning of the polyline, pen down afterward
         // and wait briefly for the pen to _get_ down
         //if this is a draw command, set feedrate to 2m/minute
-        const end = first ? '\nM3 S8000\nM4 P0.1' : ' F2000'
-        return `${type} X${x} Y${y}\n${end}`
+        const end = first ? '\nM3 S8000\nG4 P0.1' : ' F2000'
+        return `${type} X${x} Y${y}${end}`
       }).join('\n')}
-      \nM3 S4000\nM4 P0.2`//connect all the individual lines (and pen up after polyline)
+      \nM3 S4000\nG4 P0.1`//connect all the individual lines (and pen up after polyline)
     }).join('\n')}
   `//connect all the polylines
   }).join('\n')}
